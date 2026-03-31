@@ -1,4 +1,4 @@
-# nyquist-basics-1
+# Visualizing contours in complex plane for Nyquist basics
 
 A [Pluto.jl](https://plutojl.org/) notebook for teaching the **Nyquist stability criterion** by visualising the **Argument Principle**.
 
