@@ -70,12 +70,12 @@ Use the **sliders** to trace a point $s(t)$ along each contour. Watch the angle 
 # ╔═╡ 10000000-0000-0000-0000-000000000003
 begin
 	# Transfer function
-	H(s) = (s - 3) / (s^2 - 4*s + 8)
+	H(s) = (s - 3) / (s^2 + 4*s + 8)
 
 	# Singularities
 	z₁ = 3.0 + 0.0im        # zero  at s = 3
-	p₁ = 2.0 + 2.0im        # pole  at s = 2 + 2i
-	p₂ = 2.0 - 2.0im        # pole  at s = 2 - 2i
+	p₁ = -2.0 + 2.0im        # pole  at s = 2 + 2i
+	p₂ = -2.0 - 2.0im        # pole  at s = 2 - 2i
 
 	N_pts = 300              # number of contour sample points
 	θ_vec = range(0, 2π, length = N_pts + 1)[1:N_pts]
@@ -122,9 +122,6 @@ The contour $C_2$ is an **egg-shaped curve** centred at $p_1 = 2 + 2i$, traverse
 - $\angle(s - z_1)$, $\angle(s - p_2)$ net change: $0°$ (outside)  
 - $\angle H(s)$ net change: $+360°$ → $H(C_2)$ encircles origin **once counter-clockwise**
 """
-
-# ╔═╡ 0f233d37-2654-495f-aeb7-e92962e211d0
-#(Parametric: $s(\theta) = (2 + 2i) + (0.9\cos\theta + 0.1\cos 2\theta) - i\,(0.8\sin\theta + 0.1\sin 2\theta)$);
 
 # ╔═╡ 30000000-0000-0000-0000-000000000003
 @bind t₂ PlutoUI.Slider(1:N_pts, default=1, show_value=true)
@@ -189,8 +186,9 @@ let
 		lc=:royalblue, lw=2, label="Contour C₁",
 		title="s-plane  (step $t₁ / $N_pts)",
 		xlabel="Re(s)", ylabel="Im(s)",
-		xlims=(-0.5, 5.5), ylims=(-2.5, 2.5),
-		aspect_ratio=:equal, legend=:outertopright,
+		legend=:outertopright,
+		xlims=(-5.5, 5.5), ylims=(-2.5, 2.5), 
+		framestyle = :origin,
 		size=PANEL_SIZE)
 
 	# Lines from each singularity to current point (visualise the angle)
@@ -261,8 +259,8 @@ end
 # ╔═╡ 30000000-0000-0000-0000-000000000002
 begin
 	# Egg-shaped (asymmetric) clockwise contour around p₁ = 2 + 2i
-	C₂ = [(2.0 + 2.0im) +
-		  (1.4*cos(t) + 0.1*cos(2*t)) -
+	C₂ = [(-2.0 + 2.0im) +
+		  (1.4*cos(t) + 0.2*cos(2*t)) -
 		  im*(0.8*sin(t) + 0.1*sin(2*t))
 		  for t in θ_vec]
 	H₂ = H.(C₂)
@@ -284,8 +282,8 @@ let
 		lc=:royalblue, lw=2, label="Contour C₂",
 		title="s-plane  (step $t₂ / $N_pts)",
 		xlabel="Re(s)", ylabel="Im(s)",
-		xlims=(-0.5, 5.5), ylims=(-0.5, 4.0),
-		aspect_ratio=:equal, legend=:outertopright)
+		xlims=(-5.5, 5.5), ylims=(-1, 3.5), 
+		framestyle = :origin, legend=:outertopright)
 
 	plot!(sp, [real(z₁), real(s)], [imag(z₁), imag(s)],
 		lc=:darkgreen, lw=1.5, ls=:dash, label="")
@@ -1609,13 +1607,12 @@ version = "1.13.0+0"
 # ╔═╡ Cell order:
 # ╟─10000000-0000-0000-0000-000000000001
 # ╟─10000000-0000-0000-0000-000000000002
-# ╟─10000000-0000-0000-0000-000000000003
+# ╠═10000000-0000-0000-0000-000000000003
 # ╟─20000000-0000-0000-0000-000000000001
 # ╟─20000000-0000-0000-0000-000000000002
 # ╟─20000000-0000-0000-0000-000000000003
 # ╟─20000000-0000-0000-0000-000000000004
 # ╟─30000000-0000-0000-0000-000000000001
-# ╟─0f233d37-2654-495f-aeb7-e92962e211d0
 # ╟─30000000-0000-0000-0000-000000000002
 # ╟─30000000-0000-0000-0000-000000000003
 # ╟─30000000-0000-0000-0000-000000000004
