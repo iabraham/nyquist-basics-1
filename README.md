@@ -1,6 +1,6 @@
 # Visualizing contours in complex plane for Nyquist basics
 
-A [Pluto.jl](https://plutojl.org/) notebook for teaching the **Nyquist stability criterion** by visualising the **Argument Principle**.
+A [Pluto.jl](https://plutojl.org/) notebook for visualising the **Argument Principle**.
 
 ## What's in the notebook
 
@@ -25,7 +25,10 @@ Each section shows:
 ## How to run
 
 1. Install [Julia](https://julialang.org/) 1.x (any 1.x release).
-2. Install Pluto:
+2. Open a Julia REPL (terminal) and navigate to the directory containing
+   `nyquist_visualization.jl` (or navigate to the directory and then start a
+Julia REPL there).
+2. Install Pluto from the REPL:
    ```julia
    julia> import Pkg; Pkg.add("Pluto")
    ```
