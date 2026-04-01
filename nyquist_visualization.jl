@@ -18,7 +18,7 @@ end
 
 # ╔═╡ 10000000-0000-0000-0000-000000000002
 begin
-	using Plots
+	using Plots, Plots.Measures
 	using PlutoUI
 	gr()
 end
@@ -31,13 +31,13 @@ This notebook demonstrates the **Argument Principle**, which is the mathematical
 
 ## Transfer Function
 
-$$H(s) = \frac{s - 3}{s^2 - 4s + 8} = \frac{s - 3}{(s - 2 - 2i)(s - 2 + 2i)}$$
+$$H(s) = \frac{s - 3}{s^2 + 4s + 8} = \frac{s - 3}{(s + 2 - 2i)(s + 2 + 2i)}$$
 
 | Singularity | Location |
 |:---|:---|
 | **Zero** $z_1$ | $s = 3$ |
-| **Pole** $p_1$ | $s = 2 + 2i$ |
-| **Pole** $p_2$ | $s = 2 - 2i$ |
+| **Pole** $p_1$ | $s = -2 + 2i$ |
+| **Pole** $p_2$ | $s = -2 - 2i$ |
 
 ## The Argument Principle
 
@@ -61,7 +61,7 @@ The number of **clockwise** encirclements of the origin by $H(C)$ is $N = Z - P$
 | Case | Inside $C$ | $N = Z - P$ | $H(C)$ |
 |:---|:---|:---|:---|
 | **Case 1** | Zero $z_1 = 3$ | $1 - 0 = 1$ | Encircles origin **once clockwise** |
-| **Case 2** | Pole $p_1 = 2+2i$ | $0 - 1 = -1$ | Encircles origin **once counter-clockwise** |
+| **Case 2** | Pole $p_1 = -2+2i$ | $0 - 1 = -1$ | Encircles origin **once counter-clockwise** |
 | **Case 3** | Nothing | $0 - 0 = 0$ | Does **not** encircle origin |
 
 Use the **sliders** to trace a point $s(t)$ along each contour. Watch the angle evolution plot below each contour: when the point completes the full loop, angles of singularities **inside** the contour show a net $-360°$ change.
@@ -81,9 +81,10 @@ begin
 	θ_vec = range(0, 2π, length = N_pts + 1)[1:N_pts]
 
 	# Figure layout shared across all three sections
-	FIG_SIZE   = (1200, 700)             # overall figure dimensions (px)
+	FIG_SIZE   = (1200, 800)             # overall figure dimensions (px)
 	PANEL_SIZE = (400, 350)              # s-plane / H-plane sub-panel hint
 	FIG_LAYOUT = @layout([a b c; d e f])
+	MARGINS = 3mm
 end;
 
 # ╔═╡ 20000000-0000-0000-0000-000000000001
@@ -186,7 +187,7 @@ let
 		lc=:royalblue, lw=2, label="Contour C₁",
 		title="s-plane  (step $t₁ / $N_pts)",
 		xlabel="Re(s)", ylabel="Im(s)",
-		legend=:outertopright,
+		legend=:bottomright,
 		xlims=(-5.5, 5.5), ylims=(-2.5, 2.5),
 		framestyle = :origin,
 		size=PANEL_SIZE)
@@ -214,7 +215,8 @@ let
 		lc=:royalblue, lw=2, label="H(C₁)",
 		title="H(s)-plane",
 		xlabel="Re(H(s))", ylabel="Im(H(s))",
-		aspect_ratio=:equal, legend=:outertopright,
+		aspect_ratio=:equal, legend=:bottomright,
+		framestyle=:origin,
 		size=PANEL_SIZE)
 	scatter!(hp, [0.0], [0.0],
 		ms=10, mc=:black, marker=:circle, label="Origin")
@@ -228,7 +230,8 @@ let
 		lc=:darkgreen, lw=2.5, label="Net Δ∠(s − z₁)",
 		title="Net Angle Build-up",
 		xlabel="Step along contour", ylabel="Net Δ Angle (degrees)",
-		legend=:outertopright)
+		xlim=(-1/2,301)
+		)
 	plot!(np, idx, ΔH_vals,
 		lc=:royalblue, lw=2.5, ls=:dash, label="Net Δ∠H(s)")
 	hline!(np, [0.0],    lc=:black, lw=1, ls=:dot, label="")
@@ -248,7 +251,8 @@ let
 		lc=:darkgreen, lw=2, label="∠(s − z₁)",
 		title="∠(s − z₁)  [zero, inside C₁]",
 		xlabel="Step", ylabel="Angle (°)",
-		legend=:outertopright)
+		xlim=(-1/2,301)
+		)
 	hline!(p_z1, [0.0],    lc=:black, lw=1, ls=:dot, label="")
 	hline!(p_z1, [-360.0], lc=:gray,  lw=1, ls=:dot, label="")
 
@@ -257,7 +261,8 @@ let
 		lc=:crimson, lw=2, label="∠(s − p₁)",
 		title="∠(s − p₁)  [pole, outside C₁]",
 		xlabel="Step", ylabel="Angle (°)",
-		legend=:outertopright)
+		xlim=(-1/2,301), ylim=(-45,0)
+		)
 	hline!(p_p1, [0.0], lc=:black, lw=1, ls=:dot, label="")
 
 	# ── Unwrapped angle — p₂  (2,3) ──────────────────────────────────────────
@@ -265,12 +270,13 @@ let
 		lc=:purple, lw=2, label="∠(s − p₂)",
 		title="∠(s − p₂)  [pole, outside C₁]",
 		xlabel="Step", ylabel="Angle (°)",
-		legend=:outertopright)
+		xlim=(-1/2,301), ylim=(0,45)
+		)
 	hline!(p_p2, [0.0], lc=:black, lw=1, ls=:dot, label="")
 
 	plot(sp, hp, np, p_z1, p_p1, p_p2,
 		layout = FIG_LAYOUT,
-		size = FIG_SIZE)
+		size = FIG_SIZE, margin=MARGINS)
 end
 
 # ╔═╡ 30000000-0000-0000-0000-000000000002
@@ -300,7 +306,7 @@ let
 		title="s-plane  (step $t₂ / $N_pts)",
 		xlabel="Re(s)", ylabel="Im(s)",
 		xlims=(-5.5, 5.5), ylims=(-1, 3.5),
-		framestyle = :origin, legend=:outertopright)
+		framestyle = :origin, legend=:bottomright)
 
 	plot!(sp, [real(z₁), real(s)], [imag(z₁), imag(s)],
 		lc=:darkgreen, lw=1.5, ls=:dash, label="")
@@ -323,7 +329,7 @@ let
 		lc=:royalblue, lw=2, label="H(C₂)",
 		title="H(s)-plane",
 		xlabel="Re(H(s))", ylabel="Im(H(s))",
-		aspect_ratio=:equal, legend=:outertopright)
+		aspect_ratio=:equal, legend=:bottomleft, framestyle=:origin)
 	scatter!(hp, [0.0], [0.0],
 		ms=10, mc=:black, marker=:circle, label="Origin")
 	scatter!(hp, [real(h)], [imag(h)],
@@ -336,7 +342,8 @@ let
 		lc=:crimson, lw=2.5, label="Net Δ∠(s − p₁)",
 		title="Net Angle Build-up",
 		xlabel="Step along contour", ylabel="Net Δ Angle (degrees)",
-		legend=:outertopright)
+			  xlim=(-1/2,301),
+		)
 	plot!(np, idx, ΔH_vals,
 		lc=:royalblue, lw=2.5, ls=:dash, label="Net Δ∠H(s)")
 	hline!(np, [0.0],    lc=:black, lw=1, ls=:dot, label="")
@@ -357,7 +364,8 @@ let
 		lc=:darkgreen, lw=2, label="∠(s − z₁)",
 		title="∠(s − z₁)  [zero, outside C₂]",
 		xlabel="Step", ylabel="Angle (°)",
-		legend=:outertopright)
+		xlim=(-1/2,301), ylim=(100,200)
+		)
 	hline!(p_z1, [0.0], lc=:black, lw=1, ls=:dot, label="")
 
 	# ── Unwrapped angle — p₁  (2,2) ──────────────────────────────────────────
@@ -365,7 +373,8 @@ let
 		lc=:crimson, lw=2, label="∠(s − p₁)",
 		title="∠(s − p₁)  [pole, inside C₂]",
 		xlabel="Step", ylabel="Angle (°)",
-		legend=:outertopright)
+		xlim=(-1/2,301),
+		)
 	hline!(p_p1, [0.0],    lc=:black, lw=1, ls=:dot, label="")
 	hline!(p_p1, [-360.0], lc=:gray,  lw=1, ls=:dot, label="")
 
@@ -374,7 +383,8 @@ let
 		lc=:purple, lw=2, label="∠(s − p₂)",
 		title="∠(s − p₂)  [pole, outside C₂]",
 		xlabel="Step", ylabel="Angle (°)",
-		legend=:outertopright)
+		xlim=(-1/2,301),ylim=(50,150)
+		)
 	hline!(p_p2, [0.0], lc=:black, lw=1, ls=:dot, label="")
 
 	plot(sp, hp, np, p_z1, p_p1, p_p2,
@@ -408,8 +418,8 @@ let
 		lc=:royalblue, lw=2, label="Contour C₃",
 		title="s-plane  (step $t₃ / $N_pts)",
 		xlabel="Re(s)", ylabel="Im(s)",
-		xlims=(-3.5, 5.0), ylims=(-2.5, 3.5),
-		aspect_ratio=:equal, legend=:outertopright)
+		xlims=(-3, 4.0), ylims=(-2.5, 2.5),
+		aspect_ratio=:equal, legend=:topright, framestyle=:origin)
 
 	plot!(sp, [real(z₁), real(s)], [imag(z₁), imag(s)],
 		lc=:darkgreen, lw=1.5, ls=:dash, label="")
@@ -432,7 +442,7 @@ let
 		lc=:royalblue, lw=2, label="H(C₃)",
 		title="H(s)-plane",
 		xlabel="Re(H(s))", ylabel="Im(H(s))",
-		aspect_ratio=:equal, legend=:outertopright)
+		aspect_ratio=:equal, legend=:bottomright, framestyle=:origin, xlim=(-2,1/4))
 	scatter!(hp, [0.0], [0.0],
 		ms=10, mc=:black, marker=:circle, label="Origin")
 	scatter!(hp, [real(h)], [imag(h)],
@@ -445,7 +455,8 @@ let
 		lc=:darkgreen, lw=2.5, label="Net Δ∠(s − z₁)",
 		title="Net Angle Build-up",
 		xlabel="Step along contour", ylabel="Net Δ Angle (degrees)",
-		legend=:outertopright)
+		xlim=(-1/2,301), ylim=(-20,20)
+		)
 	plot!(np, idx, ΔH_vals,
 		lc=:royalblue, lw=2.5, ls=:dash, label="Net Δ∠H(s)")
 	hline!(np, [0.0], lc=:black, lw=1, ls=:dot, label="")
@@ -460,24 +471,27 @@ let
 	p_z1 = plot(idx, rad2deg.(φz_C3[idx]),
 		lc=:darkgreen, lw=2, label="∠(s − z₁)",
 		title="∠(s − z₁)  [zero, outside C₃]",
-		xlabel="Step", ylabel="Angle (°)",
-		legend=:outertopright)
+		xlabel="Step", ylabel="Angle (°)",xlim=(-1/2,301),
+		ylim=(150,200)
+		)
 	hline!(p_z1, [0.0], lc=:black, lw=1, ls=:dot, label="")
 
 	# ── Unwrapped angle — p₁  (2,2) ──────────────────────────────────────────
 	p_p1 = plot(idx, rad2deg.(φp1_C3[idx]),
 		lc=:crimson, lw=2, label="∠(s − p₁)",
 		title="∠(s − p₁)  [pole, outside C₃]",
-		xlabel="Step", ylabel="Angle (°)",
-		legend=:outertopright)
+		xlabel="Step", ylabel="Angle (°)",xlim=(-1/2,301),
+		ylim=(-125,-25)
+		)
 	hline!(p_p1, [0.0], lc=:black, lw=1, ls=:dot, label="")
 
 	# ── Unwrapped angle — p₂  (2,3) ──────────────────────────────────────────
 	p_p2 = plot(idx, rad2deg.(φp2_C3[idx]),
 		lc=:purple, lw=2, label="∠(s − p₂)",
 		title="∠(s − p₂)  [pole, outside C₃]",
-		xlabel="Step", ylabel="Angle (°)",
-		legend=:outertopright)
+		xlabel="Step", ylabel="Angle (°)",xlim=(-1/2,301),
+		ylim=(50,150)
+		)
 	hline!(p_p2, [0.0], lc=:black, lw=1, ls=:dot, label="")
 
 	plot(sp, hp, np, p_z1, p_p1, p_p2,
