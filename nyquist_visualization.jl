@@ -332,9 +332,9 @@ let
 	if t₂ == N_pts
 		Δp1 = round(rad2deg(φp1_C2[end] - φp1_C2[1]), digits=0)
 		ΔH  = round(rad2deg(φH_C2[end]  - φH_C2[1]),  digits=0)
-		annotate!(ap, N_pts*0.55, rad2deg(φp1_C2[end]) - 30,
+		annotate!(ap, N_pts*0.55, rad2deg(φp1_C2[end]) + 30,
 			text("Net Δ∠(s−p₁) = $(Δp1)°", 9, :crimson, :left))
-		annotate!(ap, N_pts*0.55, rad2deg(φH_C2[end]) + 25,
+		annotate!(ap, N_pts*0.55, rad2deg(φH_C2[end]) + 15,
 			text("Net Δ∠H = $(ΔH)°", 9, :royalblue, :left))
 	end
 
