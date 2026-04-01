@@ -22,6 +22,11 @@ Each section shows:
 - **Right panel** – *H(s)*-plane with the image curve $H(C)$ and the corresponding current image point relative to the origin.
 - **Bottom panel** – *Unwrapped angle evolution* plot: for each singularity $q$, traces $\angle(s - q)$ (radians, unwrapped) from the start to the current step. When $q$ is **inside** the contour the line drifts by exactly −360°; when outside it returns to 0°.
 
+<p align="center">
+  <img src="https://itabrah2.web.engr.illinois.edu/GIFs/nyquist-anim.gif" />
+</p>
+
+
 ## How to run
 
 1. Install [Julia](https://julialang.org/) 1.x (any 1.x release).
