@@ -240,9 +240,9 @@ let
 	if t₁ == N_pts
 		Δz = round(Δz_vals[end], digits=0)
 		ΔH = round(ΔH_vals[end], digits=0)
-		annotate!(np, N_pts*0.55, Δz_vals[end] + 30,
+		annotate!(np, N_pts*0.15, Δz_vals[end] + 30,
 			text("Net Δ∠(s−z₁) = $(Δz)°", 9, :darkgreen, :left))
-		annotate!(np, N_pts*0.45, ΔH_vals[end] + 30,
+		annotate!(np, N_pts*0.15, ΔH_vals[end] + 60,
 			text("Net Δ∠H = $(ΔH)°", 9, :royalblue, :left))
 	end
 
@@ -355,7 +355,7 @@ let
 		ΔH  = round(ΔH_vals[end],  digits=0)
 		annotate!(np, N_pts*0.55, Δp1_vals[end] + 30,
 			text("Net Δ∠(s−p₁) = $(Δp1)°", 9, :crimson, :left))
-		annotate!(np, N_pts*0.45, ΔH_vals[end] + 30,
+		annotate!(np, N_pts*0.45, ΔH_vals[end] - 30,
 			text("Net Δ∠H = $(ΔH)°", 9, :royalblue, :left))
 	end
 
@@ -463,7 +463,7 @@ let
 
 	if t₃ == N_pts
 		ΔH = round(ΔH_vals[end], digits=0)
-		annotate!(np, N_pts*0.45, ΔH_vals[end] + 10,
+		annotate!(np, N_pts*0.3, ΔH_vals[end] + 10,
 			text("Net Δ∠H = $(ΔH)°  (no encirclement)", 9, :royalblue, :left))
 	end
 
